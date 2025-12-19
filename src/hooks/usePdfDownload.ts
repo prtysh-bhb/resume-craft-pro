@@ -19,18 +19,25 @@ export const usePdfDownload = (): UsePdfDownloadReturn => {
     setIsGenerating(true);
 
     const options = {
-      margin: 0.5,
+      margin: [0.5, 0.5, 0.5, 0.5],
       filename: fileName,
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { 
         scale: 2,
         useCORS: true,
         letterRendering: true,
+        logging: false,
       },
       jsPDF: { 
         unit: 'in', 
         format: 'letter', 
         orientation: 'portrait' as const,
+      },
+      pagebreak: { 
+        mode: ['avoid-all', 'css', 'legacy'],
+        before: '.page-break-before',
+        after: '.page-break-after',
+        avoid: '.avoid-break'
       },
     };
 

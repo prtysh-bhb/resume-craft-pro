@@ -27,7 +27,8 @@ const ResumePreview = ({ resumeData }: ResumePreviewProps) => {
         <Button
           onClick={handleDownload}
           disabled={isGenerating}
-          className="gap-2 shadow-lg"
+          size="lg"
+          className="gap-2 shadow-lg bg-primary hover:bg-primary/90"
         >
           {isGenerating ? (
             <>
@@ -46,7 +47,7 @@ const ResumePreview = ({ resumeData }: ResumePreviewProps) => {
       {/* Resume Preview */}
       <div
         id="resume-preview"
-        className="resume-paper p-8 min-h-[11in] w-full max-w-[8.5in] mx-auto"
+        className="resume-paper"
       >
         {/* Header */}
         <header className="resume-header">
@@ -63,7 +64,7 @@ const ResumePreview = ({ resumeData }: ResumePreviewProps) => {
 
         {/* Profile Overview */}
         {hasContent(resumeData.profileOverview) && (
-          <section className="resume-section">
+          <section className="resume-section avoid-break">
             <h2 className="resume-section-title">Profile Overview</h2>
             <p className="resume-text">{resumeData.profileOverview}</p>
           </section>
@@ -71,14 +72,14 @@ const ResumePreview = ({ resumeData }: ResumePreviewProps) => {
 
         {/* Key Highlights */}
         {hasArrayContent(resumeData.keyHighlights) && (
-          <section className="resume-section">
+          <section className="resume-section avoid-break">
             <h2 className="resume-section-title">Key Highlights</h2>
-            <ul className="space-y-1">
+            <ul className="resume-list">
               {resumeData.keyHighlights
                 .filter(h => h.trim().length > 0)
                 .map((highlight, index) => (
                   <li key={index} className="resume-bullet">
-                    <span>{highlight}</span>
+                    {highlight}
                   </li>
                 ))}
             </ul>
@@ -91,35 +92,31 @@ const ResumePreview = ({ resumeData }: ResumePreviewProps) => {
         ) && (
           <section className="resume-section">
             <h2 className="resume-section-title">Professional Experience</h2>
-            <div className="space-y-4">
+            <div className="resume-experience-list">
               {resumeData.professionalExperience
                 .filter(exp => hasContent(exp.jobTitle) || hasContent(exp.company))
                 .map(exp => (
-                  <div key={exp.id}>
-                    <div className="flex flex-wrap justify-between items-baseline mb-1">
-                      <div>
-                        <span className="font-bold text-sm" style={{ color: 'hsl(var(--resume-heading))' }}>
+                  <div key={exp.id} className="resume-experience-item avoid-break">
+                    <div className="resume-experience-header">
+                      <div className="resume-experience-role">
+                        <span className="resume-job-title">
                           {exp.jobTitle || 'Job Title'}
                         </span>
                         {hasContent(exp.company) && (
-                          <span className="text-sm" style={{ color: 'hsl(var(--resume-text))' }}>
-                            {' '}— {exp.company}
-                          </span>
+                          <span className="resume-company"> | {exp.company}</span>
                         )}
                       </div>
                       {hasContent(exp.duration) && (
-                        <span className="text-sm italic" style={{ color: 'hsl(var(--resume-muted))' }}>
-                          {exp.duration}
-                        </span>
+                        <span className="resume-duration">{exp.duration}</span>
                       )}
                     </div>
                     {hasArrayContent(exp.responsibilities) && (
-                      <ul className="space-y-0.5 mt-1">
+                      <ul className="resume-list">
                         {exp.responsibilities
                           .filter(r => r.trim().length > 0)
                           .map((resp, index) => (
                             <li key={index} className="resume-bullet">
-                              <span>{resp}</span>
+                              {resp}
                             </li>
                           ))}
                       </ul>
@@ -134,16 +131,16 @@ const ResumePreview = ({ resumeData }: ResumePreviewProps) => {
         {resumeData.technicalSkills.some(
           skill => hasContent(skill.category) || hasContent(skill.skills)
         ) && (
-          <section className="resume-section">
+          <section className="resume-section avoid-break">
             <h2 className="resume-section-title">Technical Skills</h2>
-            <div className="space-y-1">
+            <div className="resume-skills-grid">
               {resumeData.technicalSkills
                 .filter(skill => hasContent(skill.category) || hasContent(skill.skills))
                 .map(skill => (
-                  <p key={skill.id} className="resume-text">
-                    <span className="font-bold">{skill.category || 'Category'}:</span>{' '}
-                    {skill.skills}
-                  </p>
+                  <div key={skill.id} className="resume-skill-item">
+                    <span className="resume-skill-category">{skill.category || 'Category'}:</span>
+                    <span className="resume-skill-list">{skill.skills}</span>
+                  </div>
                 ))}
             </div>
           </section>
@@ -155,16 +152,16 @@ const ResumePreview = ({ resumeData }: ResumePreviewProps) => {
         ) && (
           <section className="resume-section">
             <h2 className="resume-section-title">Project Experience</h2>
-            <div className="space-y-3">
+            <div className="resume-projects-list">
               {resumeData.projectExperience
                 .filter(proj => hasContent(proj.title) || hasContent(proj.description))
                 .map(proj => (
-                  <div key={proj.id}>
-                    <p className="font-bold text-sm" style={{ color: 'hsl(var(--resume-heading))' }}>
+                  <div key={proj.id} className="resume-project-item avoid-break">
+                    <h3 className="resume-project-title">
                       {proj.title || 'Project Title'}
-                    </p>
+                    </h3>
                     {hasContent(proj.description) && (
-                      <p className="resume-text mt-0.5">{proj.description}</p>
+                      <p className="resume-text">{proj.description}</p>
                     )}
                   </div>
                 ))}
